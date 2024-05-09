@@ -25,13 +25,12 @@ jobs:
         uses: tj-actions/glob@v22
         id: glob
         with:
-          files-separator: ','
           files: |
             **/Dockerfile
 
       - id: os
         run:
-          echo 'os_array=[$(echo "${{ steps.glob.outputs.paths }}" | tr ' ' ',')]' >> "$GITHUB_OUTPUT"
+          echo "os_array=[$(echo "${{ steps.glob.outputs.paths }}" | tr ' ' ',')]" >> "$GITHUB_OUTPUT"
       
       - name: Show all matching files
         run: |
