@@ -23,7 +23,7 @@ jobs:
         uses: tj-actions/glob@v22
         id: glob
         with:
-          files-separator: ','
+          files-separator: ,
           files: |
             **/Dockerfile
       
@@ -31,7 +31,7 @@ jobs:
         run: |
           echo "${{ steps.glob.outputs.paths }}"
 
-
+    ${{ fromJson(format('[{0}]', inputs.os)) }}
       
       # login to registry
       # - name: Login to GitHub Container Registry
