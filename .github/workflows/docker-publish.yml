@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  test:
+  get-os:
     runs-on: ubuntu-22.04
     # env:
     #   REPO_URL: ghcr.io
@@ -15,6 +15,8 @@ jobs:
     # strategy:
     #   matrix:
     #     image: [node]
+    outputs:
+      os: ${{ steps.os.outputs.os_array }}
     steps:
       - name: Check out the repo
         uses: actions/checkout@v4
@@ -23,15 +25,29 @@ jobs:
         uses: tj-actions/glob@v22
         id: glob
         with:
-          files-separator: ,
+          files-separator: ','
           files: |
             **/Dockerfile
+
+      - id: os
+        run:
+          echo "os_array=[$(echo "${{ steps.glob.outputs.paths }}" | tr ' ' ',')]" >> "$GITHUB_OUTPUT"
       
       - name: Show all matching files
         run: |
           echo "${{ steps.glob.outputs.paths }}"
 
-    ${{ fromJson(format('[{0}]', inputs.os)) }}
+  build:
+    runs-on: ubuntu-latest
+    needs: [get-os]
+    strategy:
+      matrix:
+        os: ${{ fromJSON(needs.get-os.outputs.os) }}
+    steps:
+      - name: Test
+        run: ${{ matrix.os }}
+
+    # ${{ fromJson(format('[{0}]', inputs.os)) }}
       
       # login to registry
       # - name: Login to GitHub Container Registry
