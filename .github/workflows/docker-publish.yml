@@ -31,7 +31,7 @@ jobs:
 
       - id: os
         run:
-          echo "os_array=[$(echo "${{ steps.glob.outputs.paths }}" | tr ' ' ',')]" >> "$GITHUB_OUTPUT"
+          echo 'os_array=[$(echo "${{ steps.glob.outputs.paths }}" | tr ' ' ',')]' >> "$GITHUB_OUTPUT"
       
       - name: Show all matching files
         run: |
@@ -42,7 +42,7 @@ jobs:
     needs: [get-os]
     strategy:
       matrix:
-        os: ${{ fromJSON(needs.get-os.outputs.os) }}
+        os: ${{ needs.get-os.outputs.os }}
     steps:
       - name: Test
         run: ${{ matrix.os }}
