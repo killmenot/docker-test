@@ -1,0 +1,66 @@
+---
+name: Publish Docker images
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-22.04
+    # env:
+    #   REPO_URL: ghcr.io
+    #   REPO_PROJECT: killmenot
+    # strategy:
+    #   matrix:
+    #     image: [node]
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v4
+
+      - name: Glob match
+        uses: tj-actions/glob@v22
+        id: glob
+        with:
+          files: |
+            **/Dockerfile
+      
+       - name: Show all matching files
+        run: |
+          echo "${{ steps.glob.outputs.paths }}"
+
+
+      
+      # login to registry
+      # - name: Login to GitHub Container Registry
+      #   uses: docker/login-action@v3
+      #   with:
+      #     registry: ghcr.io
+      #     username: ${{ github.actor }}
+      #     password: ${{ secrets.GITHUB_TOKEN }}
+
+      # - name: Build
+      #   env:
+      #     IMAGE: ${{ matrix.image }}
+      #   run: |
+      #     # set -x
+      #     docker build -t $REPO_URL/$REPO_PROJECT/$IMAGE $IMAGE/.
+      
+      # - name: Tag
+      #   env:
+      #     IMAGE: ${{ matrix.image }}
+      #   run: |
+      #     # set -x
+      #     VERSION=$(cat $IMAGE/VERSION)
+      #     echo $VERSION
+      #     docker tag $REPO_URL/$REPO_PROJECT/$IMAGE:latest $REPO_URL/$REPO_PROJECT/$IMAGE:$VERSION
+      
+      # - name: Push images
+      #   env:
+      #     IMAGE: ${{ matrix.image }}
+      #   run: |
+      #     # set -x
+      #     VERSION=$(cat $IMAGE/VERSION)
+      #     docker push $REPO_URL/$REPO_PROJECT/$IMAGE:latest
+      #     docker push $REPO_URL/$REPO_PROJECT/$IMAGE:$VERSION
