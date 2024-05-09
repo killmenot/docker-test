@@ -40,7 +40,7 @@ jobs:
           
       - id: os
         run:
-          echo "os_array=["${{ steps.glob.outputs.paths }"]" >> "$GITHUB_OUTPUT"
+          echo "os_array=["${{ steps.glob.outputs.paths }}"]" >> "$GITHUB_OUTPUT"
       
       - name: Show all matching files
         run: |
