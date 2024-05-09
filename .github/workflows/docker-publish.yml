@@ -25,21 +25,26 @@ jobs:
         uses: tj-actions/glob@v22
         id: glob
         with:
+          files-separator: '|'
           files: |
             **/Dockerfile
 
-      - uses: winterjung/split@v2
-        id: split
-        with:
-          msg: ${{ steps.glob.outputs.paths }}
+      - name: Show all matching files
+        run: |
+          echo "${{ steps.glob.outputs.paths  }}"
+
+      # - uses: winterjung/split@v2
+      #   id: split
+      #   with:
+      #     msg: ${{ steps.glob.outputs.paths }}
           
       # - id: os
       #   run:
       #     echo "os_array=[\"$(echo "" | tr ' ' '\",\"')\"]" >> "$GITHUB_OUTPUT"
       
-      - name: Show all matching files
-        run: |
-          echo "${{ toJSON(steps.split.outputs) }}"
+      # - name: Show all matching files
+      #   run: |
+      #     echo "${{ toJSON(steps.split.outputs) }}"
 
   # build:
   #   runs-on: ubuntu-latest
