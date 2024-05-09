@@ -15,8 +15,8 @@ jobs:
     # strategy:
     #   matrix:
     #     image: [node]
-    # outputs:
-    #   os: ${{ steps.os.outputs.os_array }}
+    outputs:
+      os: ${{ steps.os.outputs.os_array }}
     steps:
       - name: Check out the repo
         uses: actions/checkout@v4
@@ -31,20 +31,20 @@ jobs:
 
       - name: Show all matching files
         run: |
-          echo "${{ steps.glob.outputs.paths  }}"
+          echo "${{ steps.glob.outputs.paths }}"
 
       # - uses: winterjung/split@v2
       #   id: split
       #   with:
       #     msg: ${{ steps.glob.outputs.paths }}
           
-      # - id: os
-      #   run:
-      #     echo "os_array=[\"$(echo "" | tr ' ' '\",\"')\"]" >> "$GITHUB_OUTPUT"
+      - id: os
+        run:
+          echo "os_array=["${{ steps.glob.outputs.paths }"]" >> "$GITHUB_OUTPUT"
       
-      # - name: Show all matching files
-      #   run: |
-      #     echo "${{ toJSON(steps.split.outputs) }}"
+      - name: Show all matching files
+        run: |
+          echo "${{ steps.os.outputs.os_array) }}"
 
   # build:
   #   runs-on: ubuntu-latest
