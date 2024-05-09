@@ -44,7 +44,7 @@ jobs:
       
       - name: Show all matching files
         run: |
-          echo "${{ steps.os.outputs.os_array) }}"
+          echo "${{ steps.os.outputs.os_array }}"
 
   # build:
   #   runs-on: ubuntu-latest
