@@ -31,7 +31,7 @@ jobs:
 
       - name: Show all matching files
         run: |
-          echo "${{ toJSON(steps.glob.outputs.paths) }}"
+          echo ${{ steps.glob.outputs.paths }}
 
       # - uses: winterjung/split@v2
       #   id: split
@@ -40,7 +40,7 @@ jobs:
           
       # - id: os
       #   run:
-      #     echo "os_array=["${{ steps.glob.outputs.paths }}"]" >> "$GITHUB_OUTPUT"
+      #     echo "os_array=["${{ toJSON(steps.glob.outputs.paths) }}"]" >> "$GITHUB_OUTPUT"
       
       # - name: Show all matching files
       #   run: |
