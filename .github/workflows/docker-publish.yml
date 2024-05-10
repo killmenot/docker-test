@@ -6,15 +6,13 @@ on:
       - main
   workflow_dispatch:
 
+env:
+  REPO_URL: ghcr.io
+  REPO_PROJECT: killmenot
+
 jobs:
   input:
     runs-on: ubuntu-22.04
-    # env:
-    #   REPO_URL: ghcr.io
-    #   REPO_PROJECT: killmenot
-    # strategy:
-    #   matrix:
-    #     image: [node]
     outputs:
       paths: ${{ steps.wrap.outputs.paths }}
     steps:
@@ -41,23 +39,26 @@ jobs:
     needs: [input]
     strategy:
       matrix:
-        os: ${{ fromJSON(needs.input.outputs.paths) }}
+        path: ${{ fromJSON(needs.input.outputs.paths) }}
     steps:
-      - name: Test
-        run: echo "${{ matrix.os }}"
-
       - uses: winterjung/split@v2
         id: split
         with:
           separator: '/'
-          msg: "${{ matrix.os }}"
+          msg: "${{ matrix.path }}"
 
-      - name: Test2
+      - name: Inputs
+        id: image
         run: |
-          echo ${{ steps.split.outputs._0 }}
-          echo ${{ steps.split.outputs._1 }}
+          echo "name=${{ steps.split.outputs._0 }}" >> "$GITHUB_OUTPUT"
+          echo "tag=${{ steps.split.outputs._1 }}" >> "$GITHUB_OUTPUT"
+
+      - name: Test
+        id: inputs
+        run: |
+          echo "${{ steps.image.name }}"
+          echo "${{ steps.image.tag }}"
       
-      # login to registry
       # - name: Login to GitHub Container Registry
       #   uses: docker/login-action@v3
       #   with:
