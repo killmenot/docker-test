@@ -38,23 +38,23 @@ jobs:
       #   with:
       #     msg: ${{ steps.glob.outputs.paths }}
           
-      # - id: os
-      #   run:
-      #     echo "os_array=["${{ toJSON(steps.glob.outputs.paths) }}"]" >> "$GITHUB_OUTPUT"
+      - id: os
+        run:
+          echo "os_array=["${{ steps.glob.outputs.paths }}"]" >> "$GITHUB_OUTPUT"
       
-      # - name: Show all matching files
-      #   run: |
-      #     echo "${{ steps.os.outputs.os_array }}"
+      - name: Show all matching files
+        run: |
+          echo "${{ steps.os.outputs.os_array }}"
 
-  # build:
-  #   runs-on: ubuntu-latest
-  #   needs: [get-os]
-  #   strategy:
-  #     matrix:
-  #       os: ${{ needs.get-os.outputs.os }}
-  #   steps:
-  #     - name: Test
-  #       run: ${{ matrix.os }}
+  build:
+    runs-on: ubuntu-latest
+    needs: [get-os]
+    strategy:
+      matrix:
+        os: ${{ needs.get-os.outputs.os }}
+    steps:
+      - name: Test
+        run: ${{ matrix.os }}
 
     # ${{ fromJson(format('[{0}]', inputs.os)) }}
       
