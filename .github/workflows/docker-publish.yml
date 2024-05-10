@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  get-os:
+  input:
     runs-on: ubuntu-22.04
     # env:
     #   REPO_URL: ghcr.io
@@ -16,7 +16,7 @@ jobs:
     #   matrix:
     #     image: [node]
     outputs:
-      os: ${{ steps.wrap.outputs.paths }}
+      paths: ${{ steps.wrap.outputs.paths }}
     steps:
       - name: Check out the repo
         uses: actions/checkout@v4
@@ -29,41 +29,19 @@ jobs:
           files: |
             **/Dockerfile
 
-      - name: Show all matching files
+      - name: Wrap
         id: wrap
         run: |
-          paths="${{ steps.glob.outputs.paths }}"
-          echo $paths
-          paths=`echo "[\"$paths\"]" |sed 's/,/\",\"/g'`
-          echo $paths
-          echo "paths=${paths}" >> "$GITHUB_OUTPUT"
-          
-      # # - uses: winterjung/split@v2
-      # #   id: split
-      # #   with:
-      # #     msg: ${{ steps.glob.outputs.paths }}
-          
-      # - id: os
-      #   run:
-      #     echo "os_array=["${{ steps.glob.outputs.paths }}"]" >> "$GITHUB_OUTPUT"
-      - name: Test
-        run: |
-          echo "${{ steps.wrap.outputs.paths }}"
-
-      - name: Test2
-        run: |
-          echo "${{ toJSON(steps.wrap.outputs.paths) }}"
-
-      - name: Test3
-        run: |
-          echo ${{ toJSON(steps.wrap.outputs.paths) }}
+          tmp1="${{ steps.glob.outputs.paths }}"
+          tmp2=`echo "[\"$tmp1\"]" |sed 's/,/\",\"/g'`
+          echo "paths=${tmp2}" >> "$GITHUB_OUTPUT"
 
   build:
     runs-on: ubuntu-latest
-    needs: [get-os]
+    needs: [input]
     strategy:
       matrix:
-        os: ${{ fromJSON(needs.get-os.outputs.os) }}
+        os: ${{ fromJSON(needs.input.outputs.paths) }}
     steps:
       - name: Test
         run: echo "${{ matrix.os }}"
