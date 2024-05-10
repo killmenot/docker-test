@@ -32,7 +32,8 @@ jobs:
       - name: Show all matching files
         id: wrap
         run: |
-          echo "paths=\"[\"${{ steps.glob.outputs.paths }}\"]\" |sed 's/,/\",\"/g'" >> "$GITHUB_OUTPUT"
+          tmp=${{ steps.glob.outputs.paths }}
+          echo "paths=[\"${tmp//', '/\",\"}\"]" >> $GITHUB_OUTPUT
 
 
       # # - uses: winterjung/split@v2
@@ -43,8 +44,15 @@ jobs:
       # - id: os
       #   run:
       #     echo "os_array=["${{ steps.glob.outputs.paths }}"]" >> "$GITHUB_OUTPUT"
-      
-      - name: Show all matching files
+      - name: Test
+        run: |
+          echo "${{ steps.wrap.outputs.paths }}"
+
+      - name: Test2
+        run: |
+          echo "${{ toJSON(steps.wrap.outputs.paths) }}"
+
+      - name: Test3
         run: |
           echo ${{ toJSON(steps.wrap.outputs.paths) }}
 
