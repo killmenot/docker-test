@@ -49,6 +49,7 @@ jobs:
       - uses: winterjung/split@v2
         id: split
         with:
+          separator: '/'
           msg: "${{ matrix.os }}"
 
       - name: Test2
