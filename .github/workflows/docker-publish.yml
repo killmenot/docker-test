@@ -72,7 +72,7 @@ jobs:
         run: |
           # set -x
           IMAGE=${{ steps.image.outputs.name }}
-          docker build -t $REPO_URL/$REPO_PROJECT/$IMAGE ${{ steps.image.outputs.path }}/.
+          docker build -t $REPO_URL/$REPO_PROJECT/$IMAGE ./${{ steps.image.outputs.path }}.
       
       - name: Tag
         run: |
