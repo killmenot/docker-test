@@ -36,7 +36,7 @@ jobs:
           tmp2=`echo "[\"$tmp1\"]" |sed 's/,/\",\"/g'`
           echo "paths=${tmp2}" >> "$GITHUB_OUTPUT"
 
-  build:
+  push-to-registry:
     runs-on: ubuntu-latest
     needs: [input]
     strategy:
@@ -46,7 +46,15 @@ jobs:
       - name: Test
         run: echo "${{ matrix.os }}"
 
-    # ${{ fromJson(format('[{0}]', inputs.os)) }}
+      - uses: winterjung/split@v2
+        id: split
+        with:
+          msg: "${{ matrix.os }}"
+
+      - name: Test2
+        run: |
+          echo ${{ steps.split.outputs._0 }}
+          echo ${{ steps.split.outputs._1 }}
       
       # login to registry
       # - name: Login to GitHub Container Registry
