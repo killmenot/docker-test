@@ -32,7 +32,7 @@ jobs:
       - name: Show all matching files
         id: wrap
         run: |
-          echo "paths=\"[\"{{ steps.glob.outputs.paths }}\"]\" |sed 's/,/\",\"/g'" >> "$GITHUB_OUTPUT"
+          echo "paths=\"[\"${{ steps.glob.outputs.paths }}\"]\" |sed 's/,/\",\"/g'" >> "$GITHUB_OUTPUT"
 
 
       # # - uses: winterjung/split@v2
