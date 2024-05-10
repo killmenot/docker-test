@@ -30,31 +30,37 @@ jobs:
             **/Dockerfile
 
       - name: Show all matching files
+        id: wrap
         run: |
-          echo ${{ steps.glob.outputs.paths }}
+          echo "paths=["${{ steps.glob.outputs.paths }}"]" >> "$GITHUB_OUTPUT"
 
-      # - uses: winterjung/split@v2
-      #   id: split
-      #   with:
-      #     msg: ${{ steps.glob.outputs.paths }}
+      - name: Show all matching files2
+        run: |
+          echo "${{ steps.wrap.outputs.paths }}"
+
+
+      # # - uses: winterjung/split@v2
+      # #   id: split
+      # #   with:
+      # #     msg: ${{ steps.glob.outputs.paths }}
           
-      - id: os
-        run:
-          echo "os_array=["${{ steps.glob.outputs.paths }}"]" >> "$GITHUB_OUTPUT"
+      # - id: os
+      #   run:
+      #     echo "os_array=["${{ steps.glob.outputs.paths }}"]" >> "$GITHUB_OUTPUT"
       
-      - name: Show all matching files
-        run: |
-          echo "${{ steps.os.outputs.os_array }}"
+      # - name: Show all matching files
+      #   run: |
+      #     echo "${{ steps.os.outputs.os_array }}"
 
-  build:
-    runs-on: ubuntu-latest
-    needs: [get-os]
-    strategy:
-      matrix:
-        os: ${{ needs.get-os.outputs.os }}
-    steps:
-      - name: Test
-        run: ${{ matrix.os }}
+  # build:
+  #   runs-on: ubuntu-latest
+  #   needs: [get-os]
+  #   strategy:
+  #     matrix:
+  #       os: ${{ needs.get-os.outputs.os }}
+  #   steps:
+  #     - name: Test
+  #       run: ${{ matrix.os }}
 
     # ${{ fromJson(format('[{0}]', inputs.os)) }}
       
