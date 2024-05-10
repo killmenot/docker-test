@@ -41,6 +41,9 @@ jobs:
       matrix:
         path: ${{ fromJSON(needs.input.outputs.paths) }}
     steps:
+      - name: Check out the repo
+        uses: actions/checkout@v4
+
       - uses: winterjung/split@v2
         id: split
         with:
