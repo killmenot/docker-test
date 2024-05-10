@@ -32,8 +32,10 @@ jobs:
       - name: Show all matching files
         id: wrap
         run: |
-          paths=${{ steps.glob.outputs.paths }}
+          paths="${{ steps.glob.outputs.paths }}"
+          echo $paths
           paths=`echo "[\"$tmp\"]" |sed 's/,/\",\"/g'`
+          echo $paths
           echo "paths=${paths}" >> "$GITHUB_OUTPUT"
           
 
