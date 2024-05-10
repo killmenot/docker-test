@@ -50,8 +50,8 @@ jobs:
       - name: Inputs
         id: image
         run: |
-          echo "name=${{ steps.split.outputs._0 }}" >> "$GITHUB_OUTPUT"
-          echo "tag=${{ steps.split.outputs._1 }}" >> "$GITHUB_OUTPUT"
+          echo "name=\"${{ steps.split.outputs._0 }}\"" >> "$GITHUB_OUTPUT"
+          echo "tag=\"${{ steps.split.outputs._1 }}\"" >> "$GITHUB_OUTPUT"
 
       - name: Test
         id: inputs
