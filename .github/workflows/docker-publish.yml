@@ -34,7 +34,7 @@ jobs:
         run: |
           paths="${{ steps.glob.outputs.paths }}"
           echo $paths
-          paths=`echo "[\"$tmp\"]" |sed 's/,/\",\"/g'`
+          paths=`echo "[\"$paths\"]" |sed 's/,/\",\"/g'`
           echo $paths
           echo "paths=${paths}" >> "$GITHUB_OUTPUT"
           
