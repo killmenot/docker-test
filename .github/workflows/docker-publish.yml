@@ -51,18 +51,19 @@ jobs:
           msg: "${{ matrix.path }}"
 
       - name: Inputs
-        id: image
-        run: |
-          echo "name=${{ steps.split.outputs._0 }}" >> "$GITHUB_OUTPUT"
-          echo "tag=${{ steps.split.outputs._1 }}" >> "$GITHUB_OUTPUT"
-          echo "path=${{ steps.split.outputs._0 }}/${{ steps.split.outputs._1 }}" >> "$GITHUB_OUTPUT"
-
-      - name: Test
         id: inputs
         run: |
-          echo "${{ steps.image.outputs.name }}"
-          echo "${{ steps.image.outputs.tag }}"
-          echo "${{ steps.image.outputs.path }}"
+          echo "tag=${{ steps.split.outputs._0 }}" >> "$GITHUB_OUTPUT"
+          echo "version=${{ steps.split.outputs._1 }}" >> "$GITHUB_OUTPUT"
+          echo "path=${{ steps.split.outputs._0 }}/${{ steps.split.outputs._1 }}" >> "$GITHUB_OUTPUT"
+          echo "latest=${{ steps.split.outputs._0 }}/${{ steps.split.outputs._1 }}/LATEST" >> "$GITHUB_OUTPUT"
+
+      - name: Print inputs
+        run: |
+          echo "${{ steps.inputs.outputs.tag }}"
+          echo "${{ steps.inputs.outputs.version }}"
+          echo "${{ steps.inputs.outputs.path }}"
+          echo "${{ steps.inputs.outputs.latest }}"
       
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v3
@@ -71,26 +72,33 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build
+      - name: Build and tag
         run: |
           # set -x
-          IMAGE=${{ steps.image.outputs.name }}
-          docker build -t $REPO_URL/$REPO_PROJECT/$IMAGE ./${{ steps.image.outputs.path }}
-      
-      - name: Tag
-        run: |
-          # set -x
-          IMAGE=${{ steps.image.outputs.name }}
-          VERSION=${{ steps.image.outputs.tag }}
-          docker tag $REPO_URL/$REPO_PROJECT/$IMAGE:latest $REPO_URL/$REPO_PROJECT/$IMAGE:$VERSION
+          IMAGE=${{ steps.inputs.outputs.tag }}
+          VERSION=${{ steps.image.outputs.version }}
+          LATEST=${{ steps.inputs.outputs.latest }}
 
-      - name: Test2
+          docker build -t $REPO_URL/$REPO_PROJECT/$IMAGE:$VERSION ./${{ steps.inputs.outputs.path }}
+          
+          if [ -f "$LATEST" ]
+          then
+            docker tag $REPO_URL/$REPO_PROJECT/$IMAGE:$VERSION $REPO_URL/$REPO_PROJECT/$IMAGE:latest 
+          fi
+
+      - name: Test
         run: docker image ls
       
       - name: Push images
         run: |
           # set -x
-          IMAGE=${{ steps.image.outputs.name }}
-          VERSION=${{ steps.image.outputs.tag }}
-          docker push $REPO_URL/$REPO_PROJECT/$IMAGE:latest
+          IMAGE=${{ steps.inputs.outputs.tag }}
+          VERSION=${{ steps.image.outputs.version }}
+          LATEST=${{ steps.inputs.outputs.latest }}
+
           docker push $REPO_URL/$REPO_PROJECT/$IMAGE:$VERSION
+
+          if [ -f "$LATEST" ]
+          then
+            docker push $REPO_URL/$REPO_PROJECT/$IMAGE:latest
+          fi
