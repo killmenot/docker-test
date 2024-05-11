@@ -76,7 +76,7 @@ jobs:
         run: |
           # set -x
           IMAGE=${{ steps.inputs.outputs.tag }}
-          VERSION=${{ steps.image.outputs.version }}
+          VERSION=${{ steps.inputs.outputs.version }}
           LATEST=${{ steps.inputs.outputs.latest }}
 
           docker build -t $REPO_URL/$REPO_PROJECT/$IMAGE:$VERSION ./${{ steps.inputs.outputs.path }}
@@ -93,7 +93,7 @@ jobs:
         run: |
           # set -x
           IMAGE=${{ steps.inputs.outputs.tag }}
-          VERSION=${{ steps.image.outputs.version }}
+          VERSION=${{ steps.inputs.outputs.version }}
           LATEST=${{ steps.inputs.outputs.latest }}
 
           docker push $REPO_URL/$REPO_PROJECT/$IMAGE:$VERSION
