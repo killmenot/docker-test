@@ -53,24 +53,29 @@ jobs:
       - name: Inputs
         id: inputs
         run: |
-          echo "tag=${{ steps.split.outputs._0 }}" >> "$GITHUB_OUTPUT"
-          echo "version=${{ steps.split.outputs._1 }}" >> "$GITHUB_OUTPUT"
-          echo "path=${{ steps.split.outputs._0 }}/${{ steps.split.outputs._1 }}" >> "$GITHUB_OUTPUT"
-          echo "latest=${{ steps.split.outputs._0 }}/${{ steps.split.outputs._1 }}/LATEST" >> "$GITHUB_OUTPUT"
+          echo "test1=${{ steps.split.outputs._0 }}"
+          echo "test2=${{ steps.split.outputs._1 }}"
+          echo "test3=${{ steps.split.outputs._2 }}"
+          echo "test4=${{ steps.split.outputs._3 }}"
 
-      - name: Print inputs
-        run: |
-          echo "${{ steps.inputs.outputs.tag }}"
-          echo "${{ steps.inputs.outputs.version }}"
-          echo "${{ steps.inputs.outputs.path }}"
-          echo "${{ steps.inputs.outputs.latest }}"
+          # echo "tag=${{ steps.split.outputs._0 }}" >> "$GITHUB_OUTPUT"
+          # echo "version=${{ steps.split.outputs._1 }}" >> "$GITHUB_OUTPUT"
+          # echo "path=${{ steps.split.outputs._0 }}/${{ steps.split.outputs._1 }}" >> "$GITHUB_OUTPUT"
+          # echo "latest=${{ steps.split.outputs._0 }}/${{ steps.split.outputs._1 }}/LATEST" >> "$GITHUB_OUTPUT"
+
+      # - name: Print inputs
+      #   run: |
+      #     echo "${{ steps.inputs.outputs.tag }}"
+      #     echo "${{ steps.inputs.outputs.version }}"
+      #     echo "${{ steps.inputs.outputs.path }}"
+      #     echo "${{ steps.inputs.outputs.latest }}"
       
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+      # - name: Login to GitHub Container Registry
+      #   uses: docker/login-action@v3
+      #   with:
+      #     registry: ghcr.io
+      #     username: ${{ github.actor }}
+      #     password: ${{ secrets.GITHUB_TOKEN }}
 
       # - name: Build and tag
       #   run: |
