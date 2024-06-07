@@ -53,10 +53,24 @@ jobs:
       - name: Inputs
         id: inputs
         run: |
-          echo "test1=${{ steps.split.outputs._0 }}"
-          echo "test2=${{ steps.split.outputs._1 }}"
-          echo "test3=${{ steps.split.outputs._2 }}"
-          echo "test4=${{ steps.split.outputs._3 }}"
+          OUTPUT_0=${{ steps.split.outputs._0 }}
+          OUTPUT_1=${{ steps.split.outputs._1 }}
+          OUTPUT_2=${{ steps.split.outputs._2 }}
+          OUTPUT_3=${{ steps.split.outputs._3 }}
+
+          echo $OUTPUT_0
+          echo $OUTPUT_1
+          echo $OUTPUT_2
+          echo $OUTPUT_3
+
+          if [ -z $OUTPUT_3 ]
+          then
+            echo "NODE"
+          else
+            echo "POSTGIS"
+          fi
+
+
 
           # echo "tag=${{ steps.split.outputs._0 }}" >> "$GITHUB_OUTPUT"
           # echo "version=${{ steps.split.outputs._1 }}" >> "$GITHUB_OUTPUT"
