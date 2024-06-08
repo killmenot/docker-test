@@ -60,10 +60,12 @@ jobs:
 
           [[ -z $OUTPUT_3 ]] && IMAGE=${{ steps.split.outputs._0 }} || IMAGE=${{ steps.split.outputs._0 }}/${{ steps.split.outputs._1 }}
           [[ -z $OUTPUT_3 ]] && TAG=${{ steps.split.outputs._1 }} || TAG=${{ steps.split.outputs._2 }}
-          [[ -z $OUTPUT_3 ]] && LATEST="${{ steps.split.outputs._0 }}/${{ steps.split.outputs._1 }}/LATEST" || LATEST="${{ steps.split.outputs._0 }}/${{ steps.split.outputs._1 }}/${{ steps.split.outputs._2 }}/LATEST"
+          [[ -z $OUTPUT_3 ]] && LOCATION=${{ steps.split.outputs._0 }}/${{ steps.split.outputs._1 }} || LOCATION=${{ steps.split.outputs._0 }}/${{ steps.split.outputs._1 }}/${{ steps.split.outputs._2 }}
+          [[ -z $OUTPUT_3 ]] && LATEST=${{ steps.split.outputs._0 }}/${{ steps.split.outputs._1 }}/LATEST || LATEST=${{ steps.split.outputs._0 }}/${{ steps.split.outputs._1 }}/${{ steps.split.outputs._2 }}/LATEST
           
           echo $IMAGE
           echo $TAG
+          echo $LOCATION
           echo $LATEST
 
           # echo $OUTPUT_0
