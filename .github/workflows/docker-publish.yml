@@ -58,9 +58,13 @@ jobs:
           OUTPUT_2=${{ steps.split.outputs._2 }}
           OUTPUT_3=${{ steps.split.outputs._3 }}
 
-          [[ -z $OUTPUT_3 ]] && image=${{ steps.split.outputs._0 }} || image=${{ steps.split.outputs._0 }}/${{ steps.split.outputs._1 }}
+          [[ -z $OUTPUT_3 ]] && IMAGE=${{ steps.split.outputs._0 }} || IMAGE=${{ steps.split.outputs._0 }}/${{ steps.split.outputs._1 }}
+          [[ -z $OUTPUT_3 ]] && TAG=${{ steps.split.outputs._1 }} || TAG=${{ steps.split.outputs._2 }}
+          [[ -z $OUTPUT_3 ]] && LATEST="${{ steps.split.outputs._0 }}/${{ steps.split.outputs._1 }}/LATEST" || LATEST="${{ steps.split.outputs._0 }}/${{ steps.split.outputs._1 }}/${{ steps.split.outputs._2 }}/LATEST"
           
-          echo $image
+          echo $IMAGE
+          echo $TAG
+          echo $LATEST
 
           # echo $OUTPUT_0
           # echo $OUTPUT_1
