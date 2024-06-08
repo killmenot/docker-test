@@ -89,7 +89,7 @@ jobs:
           TAG=${{ steps.inputs.outputs.tag }}
           LATEST=${{ steps.inputs.outputs.latest }}
 
-          docker build -t $REPO_URL/$REPO_PROJECT/$IMAGE:$TAG ./${{ steps.inputs.outputs.path }}
+          docker build -t $REPO_URL/$REPO_PROJECT/$IMAGE:$TAG ./${{ steps.inputs.outputs.location }}
           
           if [ -f "$LATEST" ]
           then
