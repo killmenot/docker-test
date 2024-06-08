@@ -63,10 +63,10 @@ jobs:
           [[ -z $OUTPUT_3 ]] && LOCATION=${{ steps.split.outputs._0 }}/${{ steps.split.outputs._1 }} || LOCATION=${{ steps.split.outputs._0 }}/${{ steps.split.outputs._1 }}/${{ steps.split.outputs._2 }}
           [[ -z $OUTPUT_3 ]] && LATEST=${{ steps.split.outputs._0 }}/${{ steps.split.outputs._1 }}/LATEST || LATEST=${{ steps.split.outputs._0 }}/${{ steps.split.outputs._1 }}/${{ steps.split.outputs._2 }}/LATEST
           
-          echo "image=$IMAGE >> "$GITHUB_OUTPUT"
-          echo "tag=$TAG >> "$GITHUB_OUTPUT"
-          echo "location=$LOCATION >> "$GITHUB_OUTPUT"
-          echo "latest=$LATEST >> "$GITHUB_OUTPUT"
+          echo "image=$IMAGE" >> "$GITHUB_OUTPUT"
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+          echo "location=$LOCATION" >> "$GITHUB_OUTPUT"
+          echo "latest=$LATEST" >> "$GITHUB_OUTPUT"
 
       - name: Print inputs
         run: |
