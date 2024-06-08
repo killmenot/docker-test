@@ -65,15 +65,17 @@ jobs:
 
           if [ -z $OUTPUT_3 ]
           then
-            echo "image=${{ steps.split.outputs._0 }}" >> "$GITHUB_OUTPUT"
-            echo "tag=${{ steps.split.outputs._1 }}" >> "$GITHUB_OUTPUT"
-            echo "path=${{ steps.split.outputs._0 }}/${{ steps.split.outputs._1 }}" >> "$GITHUB_OUTPUT"
-            echo "latest=${{ steps.split.outputs._0 }}/${{ steps.split.outputs._1 }}/LATEST" >> "$GITHUB_OUTPUT"
+            echo "Node"
+            # echo "image=${{ steps.split.outputs._0 }}" >> "$GITHUB_OUTPUT"
+            # echo "tag=${{ steps.split.outputs._1 }}" >> "$GITHUB_OUTPUT"
+            # echo "path=${{ steps.split.outputs._0 }}/${{ steps.split.outputs._1 }}" >> "$GITHUB_OUTPUT"
+            # echo "latest=${{ steps.split.outputs._0 }}/${{ steps.split.outputs._1 }}/LATEST" >> "$GITHUB_OUTPUT"
           else
-            echo "image=${{ steps.split.outputs._0 }}/${{ steps.split.outputs._1 }}" >> "$GITHUB_OUTPUT"
-            echo "tag=${{ steps.split.outputs._2 }}" >> "$GITHUB_OUTPUT"
-            echo "path=${{ steps.split.outputs._0 }}/${{ steps.split.outputs._1 }}/${{ steps.split.outputs._2 }}" >> "$GITHUB_OUTPUT"
-            echo "latest=${{ steps.split.outputs._0 }}/${{ steps.split.outputs._1 }}/${{ steps.split.outputs._2 }}}/LATEST" >> "$GITHUB_OUTPUT"
+            echo "Postgis"
+            # echo "image=${{ steps.split.outputs._0 }}/${{ steps.split.outputs._1 }}" >> "$GITHUB_OUTPUT"
+            # echo "tag=${{ steps.split.outputs._1 }}" >> "$GITHUB_OUTPUT"
+            # echo "path=${{ steps.split.outputs._0 }}/${{ steps.split.outputs._1 }}/${{ steps.split.outputs._2 }}" >> "$GITHUB_OUTPUT"
+            # echo "latest=${{ steps.split.outputs._0 }}/${{ steps.split.outputs._1 }}/${{ steps.split.outputs._2 }}/LATEST" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Print inputs
