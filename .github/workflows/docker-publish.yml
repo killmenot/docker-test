@@ -63,72 +63,52 @@ jobs:
           [[ -z $OUTPUT_3 ]] && LOCATION=${{ steps.split.outputs._0 }}/${{ steps.split.outputs._1 }} || LOCATION=${{ steps.split.outputs._0 }}/${{ steps.split.outputs._1 }}/${{ steps.split.outputs._2 }}
           [[ -z $OUTPUT_3 ]] && LATEST=${{ steps.split.outputs._0 }}/${{ steps.split.outputs._1 }}/LATEST || LATEST=${{ steps.split.outputs._0 }}/${{ steps.split.outputs._1 }}/${{ steps.split.outputs._2 }}/LATEST
           
-          echo $IMAGE
-          echo $TAG
-          echo $LOCATION
-          echo $LATEST
+          echo "image=$IMAGE >> "$GITHUB_OUTPUT"
+          echo "tag=$TAG >> "$GITHUB_OUTPUT"
+          echo "location=$LOCATION >> "$GITHUB_OUTPUT"
+          echo "latest=$LATEST >> "$GITHUB_OUTPUT"
 
-          # echo $OUTPUT_0
-          # echo $OUTPUT_1
-          # echo $OUTPUT_2
-          # echo $OUTPUT_3
-
-          # if [ -z $OUTPUT_3 ]
-          # then
-          #   echo "Node"
-          #   # echo "image=${{ steps.split.outputs._0 }}" >> "$GITHUB_OUTPUT"
-          #   # echo "tag=${{ steps.split.outputs._1 }}" >> "$GITHUB_OUTPUT"
-          #   # echo "path=${{ steps.split.outputs._0 }}/${{ steps.split.outputs._1 }}" >> "$GITHUB_OUTPUT"
-          #   # echo "latest=${{ steps.split.outputs._0 }}/${{ steps.split.outputs._1 }}/LATEST" >> "$GITHUB_OUTPUT"
-          # else
-          #   echo "Postgis"
-          #   # echo "image=${{ steps.split.outputs._0 }}/${{ steps.split.outputs._1 }}" >> "$GITHUB_OUTPUT"
-          #   # echo "tag=${{ steps.split.outputs._1 }}" >> "$GITHUB_OUTPUT"
-          #   # echo "path=${{ steps.split.outputs._0 }}/${{ steps.split.outputs._1 }}/${{ steps.split.outputs._2 }}" >> "$GITHUB_OUTPUT"
-          #   # echo "latest=${{ steps.split.outputs._0 }}/${{ steps.split.outputs._1 }}/${{ steps.split.outputs._2 }}/LATEST" >> "$GITHUB_OUTPUT"
-          # fi
-
-      # - name: Print inputs
-      #   run: |
-      #     echo "${{ steps.inputs.outputs.image }}"
-      #     echo "${{ steps.inputs.outputs.version }}"
-      #     echo "${{ steps.inputs.outputs.path }}"
-      #     echo "${{ steps.inputs.outputs.latest }}"
+      - name: Print inputs
+        run: |
+          echo "${{ steps.inputs.outputs.image }}"
+          echo "${{ steps.inputs.outputs.tag }}"
+          echo "${{ steps.inputs.outputs.location }}"
+          echo "${{ steps.inputs.outputs.latest }}"
       
-      # - name: Login to GitHub Container Registry
-      #   uses: docker/login-action@v3
-      #   with:
-      #     registry: ghcr.io
-      #     username: ${{ github.actor }}
-      #     password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
-      # - name: Build and tag
-      #   run: |
-      #     # set -x
-      #     IMAGE=${{ steps.inputs.outputs.image }}
-      #     VERSION=${{ steps.inputs.outputs.version }}
-      #     LATEST=${{ steps.inputs.outputs.latest }}
+      - name: Build and tag
+        run: |
+          # set -x
+          IMAGE=${{ steps.inputs.outputs.image }}
+          TAG=${{ steps.inputs.outputs.tag }}
+          LATEST=${{ steps.inputs.outputs.latest }}
 
-      #     docker build -t $REPO_URL/$REPO_PROJECT/$IMAGE:$VERSION ./${{ steps.inputs.outputs.path }}
+          docker build -t $REPO_URL/$REPO_PROJECT/$IMAGE:$TAG ./${{ steps.inputs.outputs.path }}
           
-      #     if [ -f "$LATEST" ]
-      #     then
-      #       docker tag $REPO_URL/$REPO_PROJECT/$IMAGE:$VERSION $REPO_URL/$REPO_PROJECT/$IMAGE:latest 
-      #     fi
+          if [ -f "$LATEST" ]
+          then
+            docker tag $REPO_URL/$REPO_PROJECT/$IMAGE:$TAG $REPO_URL/$REPO_PROJECT/$IMAGE:latest 
+          fi
 
-      # - name: Test
-      #   run: docker image ls
+      - name: Test
+        run: docker image ls
       
-      # - name: Push images
-      #   run: |
-      #     # set -x
-      #     IMAGE=${{ steps.inputs.outputs.image }}
-      #     VERSION=${{ steps.inputs.outputs.version }}
-      #     LATEST=${{ steps.inputs.outputs.latest }}
+      - name: Push images
+        run: |
+          # set -x
+          IMAGE=${{ steps.inputs.outputs.image }}
+          TAG=${{ steps.inputs.outputs.tag }}
+          LATEST=${{ steps.inputs.outputs.latest }}
 
-      #     docker push $REPO_URL/$REPO_PROJECT/$IMAGE:$VERSION
+          docker push $REPO_URL/$REPO_PROJECT/$IMAGE:$TAG
 
-      #     if [ -f "$LATEST" ]
-      #     then
-      #       docker push $REPO_URL/$REPO_PROJECT/$IMAGE:latest
-      #     fi
+          if [ -f "$LATEST" ]
+          then
+            docker push $REPO_URL/$REPO_PROJECT/$IMAGE:latest
+          fi
