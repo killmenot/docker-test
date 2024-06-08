@@ -58,8 +58,10 @@ jobs:
           OUTPUT_2=${{ steps.split.outputs._2 }}
           OUTPUT_3=${{ steps.split.outputs._3 }}
 
-          [[ -z $OUTPUT_3 ]] && image="Node" || image="Postgis"
+          [[ -z $OUTPUT_3 ]] && image=${{ steps.split.outputs._0 }} || image=${{ steps.split.outputs._0 }}/${{ steps.split.outputs._1 }}
+          
           echo $image
+
           # echo $OUTPUT_0
           # echo $OUTPUT_1
           # echo $OUTPUT_2
